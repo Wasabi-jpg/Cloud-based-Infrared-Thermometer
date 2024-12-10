@@ -7,3 +7,5 @@ Hi, this is an IoT project where a friend and I wanted to improve on the commerc
 - 1 GY-906 MLX90614 Non-Contact IR Infrared Temperature Sensor Module
 - 1 MF50100V1-1000U-A99 (Fan)
 
+## Setup Image
+![github_pic](https://github.com/user-attachments/assets/84910e85-ef39-4a21-8774-44d712213e06)
