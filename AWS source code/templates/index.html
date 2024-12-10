@@ -1,0 +1,84 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2818
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fnil\fcharset0 Menlo-Regular;}
+{\colortbl;\red255\green255\blue255;\red46\green174\blue187;\red0\green0\blue0;\red180\green36\blue25;
+\red47\green180\blue29;}
+{\*\expandedcolortbl;;\cssrgb\c20199\c73241\c78251;\csgray\c0;\cssrgb\c76411\c21697\c12527;
+\cssrgb\c20241\c73898\c14950;}
+\margl1440\margr1440\vieww11520\viewh8400\viewkind0
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+
+\f0\fs22 \cf2 \CocoaLigature0 <!DOCTYPE html>\cf3 \
+\cf2 <html \cf4 lang=\cf5 "en"\cf2 >\cf3 \
+\cf2 <head>\cf3 \
+  \cf2 <meta \cf4 charset=\cf5 "UTF-8"\cf2 >\cf3 \
+  \cf2 <meta \cf4 name=\cf5 "viewport"\cf2  \cf4 content=\cf5 "width=device-width, initial-scale=1.0"\cf2 >\cf3 \
+  \cf2 <title>\cf3 Real-Time Data Plot\cf2 </title>\cf3 \
+  \cf2 <script \cf4 src=\cf5 "https://cdn.jsdelivr.net/npm/chart.js"\cf2 ></script>\cf3 \
+\cf2 </head>\cf3 \
+\cf2 <body>\cf3 \
+  \cf2 <h1>\cf3 Ambient and Object Temperature Readings\cf2 </h1>\cf3 \
+  \cf2 <canvas \cf4 id=\cf5 "dataChart"\cf2  \cf4 width=\cf5 "800"\cf2  \cf4 height=\cf5 "400"\cf2 ></canvas>\cf3 \
+\
+  \cf2 <script>\cf3 \
+    const ctx = document.getElementById('dataChart').getContext('2d');\
+    const chart = new Chart(ctx, \{\
+      type: 'line',\
+      data: \{\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+        labels: [], // Timestamps\
+        datasets: [\
+          \{\
+            label: 'Ambient Temperature (\'b0C)',\
+            borderColor: 'rgba(255, 99, 132, 1)',\
+            data: [], // Ambient Temp Data\
+          \},\
+          \{\
+            label: 'Object Temperature (\'b0C)',\
+            borderColor: 'rgba(54, 162, 235, 1)',\
+            data: [], // Object Temp Data\
+          \}\
+        ]\
+      \},\
+      options: \{\
+        scales: \{\
+          x: \{ title: \{ display: true, text: 'Time' \} \},\
+          y: \{ title: \{ display: true, text: 'Temperature (\'b0C)' \} \}\
+        \}\
+      \}\
+    \});\
+\
+    async function updateChart() \{\
+      try \{\
+        // Make sure the URL matches your server's IP/Domain and port (5000)\
+        const response = await fetch('http://52.53.158.242:5000/data');\
+        const data = await response.json();\
+\
+        // Extract the timestamp and temperature values\
+        const timestamp = new Date(data[0].timestamp * 1000).toLocaleTimeString();\
+        const ambientTemp = data[0].ambientTemp;\
+        const objectTemp = data[0].objectTemp;\
+\
+        // Append the new data to the chart\
+        chart.data.labels.push(timestamp); // Add new timestamp\
+        chart.data.datasets[0].data.push(ambientTemp); // Add new ambient temperature\
+        chart.data.datasets[1].data.push(objectTemp); // Add new object temperature\
+\
+        // If the chart exceeds 50 points, remove the oldest point (for smoother scrolling)\
+        if (chart.data.labels.length > 50) \{\
+          chart.data.labels.shift(); // Remove the first label\
+          chart.data.datasets[0].data.shift(); // Remove the first ambient temperature\
+          chart.data.datasets[1].data.shift(); // Remove the first object temperature\
+        \}\
+\
+        chart.update();\
+      \} catch (error) \{\
+        console.error(\cf5 "Error fetching data:"\cf3 , error);\
+      \}\
+    \}\
+\
+    // Update chart every 2 seconds\
+    setInterval(updateChart, 2000);\
+  \cf2 </script>\cf3 \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+\cf2 </body>\cf3 \
+\cf2 </html>}
