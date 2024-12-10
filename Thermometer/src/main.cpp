@@ -22,8 +22,8 @@ TFT_eSPI tft = TFT_eSPI(); //using the OLED
 
 // This example downloads the URL "http://arduino.cc/"
 
-char ssid[] = "S24";//"slayer3000"; // your network SSID (name)
-char pass[] = "Y33THay!";//"password";   // your network password (use for WPA, or use
+char ssid[] = ""; // your network SSID (name)
+char pass[] = ""; // your network password (use for WPA, or use
                             // as key for WEP)
 
 // Name of the server we want to connect to
